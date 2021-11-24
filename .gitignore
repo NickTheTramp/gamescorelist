@@ -1,0 +1,6 @@
+db
+.env
+.DS_Store
+uploads/
+
+.idea

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}👾 - games{% endblock %}
+
+{% block body %}
+<div class="container-sm">
+    <div class="d-flex justify-content-around align-items-center">
+        <h1>Games</h1>
+        <a class="btn btn-primary" href="/games/new">Create New</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for game in games %}
+            <tr>
+                <th scope="row">{{game.id}}</th>
+                <td>{{game.name}}</td>
+                <td><a href="{{ path('games_edit', {id: game.id}) }}">Bewerken</a></td>
+                <td><a href="{{ path('games_delete', {id: game.id}) }}">Verwijderen</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table> 
+</div>
+{% endblock %}
