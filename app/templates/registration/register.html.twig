@@ -1,3 +1,8 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}👾 - Regiser{% endblock %}
+
 {% block body %}
     <h1>Register</h1>
 
@@ -10,4 +15,7 @@
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
+
+    <a class="button" href="{{ path('login') }}">login</a>
+
 {% endblock %}

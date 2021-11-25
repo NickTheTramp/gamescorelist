@@ -40,19 +40,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="users")
-     */
-    private $Groups;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Group::class)
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $SelectedGroup;
+    private $selectedGroup;
 
     public function __construct()
     {
-        $this->Groups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,38 +133,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Group[]
-     */
-    public function getGroups(): Collection
-    {
-        return $this->Groups;
-    }
-
-    public function addGroup(Group $group): self
-    {
-        if (!$this->Groups->contains($group)) {
-            $this->Groups[] = $group;
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        $this->Groups->removeElement($group);
-
-        return $this;
-    }
-
     public function getSelectedGroup(): ?Group
     {
-        return $this->SelectedGroup;
+        return $this->selectedGroup;
     }
 
-    public function setSelectedGroup(?Group $SelectedGroup): self
+    public function setSelectedGroup(?Group $selectedGroup): self
     {
-        $this->SelectedGroup = $SelectedGroup;
+        $this->selectedGroup = $selectedGroup;
 
         return $this;
     }

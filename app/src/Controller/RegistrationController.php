@@ -17,6 +17,10 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface, EntityManagerInterface $em): Response
     {
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('dashboard');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -33,10 +37,9 @@ class RegistrationController extends AbstractController
             $group = $em->getRepository(Group::class)->findOneBy(['secret' => $form->get('secret')->getData()]);
 
             if (!isset($group)) {
-                return $this->redirectToRoute('register');
+                return $this->redirectToRoute('app_register');
             }
 
-            $user->addGroup($group);
             $user->setSelectedGroup($group);
 
             $em->persist($user);

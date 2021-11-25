@@ -16,6 +16,7 @@
         {% endblock %}
     </head>
     <body>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="/">GameScoreList</a>
         <a class="navbar-brand" href="/playedgames">Played Games</a>
@@ -23,6 +24,7 @@
         <a class="navbar-brand" href="/games">Games</a>
         <a class="navbar-brand" href="/user">User</a>
     </nav>
+    {% endif %}
         {% block body %}{% endblock %}
     </body>
 </html>

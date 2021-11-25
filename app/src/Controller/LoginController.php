@@ -12,6 +12,10 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('dashboard');
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -22,5 +26,10 @@ class LoginController extends AbstractController
             'last_username' => $lastUsername,
             'error'         => $error,
         ]);
+    }
+
+    #[Route('/logout', name: 'app_logout')]
+    public function logout(): void
+    {
     }
 }

@@ -28,14 +28,14 @@ class Group
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="Groups")
-     */
-    private $users;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $secret;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="selectedGroup")
+     */
+    private $users;
 
     public function __construct()
     {
@@ -60,6 +60,18 @@ class Group
         return $this;
     }
 
+    public function getSecret(): ?string
+    {
+        return $this->secret;
+    }
+
+    public function setSecret(string $secret): self
+    {
+        $this->secret = $secret;
+
+        return $this;
+    }
+
     /**
      * @return Collection|User[]
      */
@@ -72,7 +84,7 @@ class Group
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->addGroup($this);
+            $user->setSelectedGroup($this);
         }
 
         return $this;
@@ -81,20 +93,11 @@ class Group
     public function removeUser(User $user): self
     {
         if ($this->users->removeElement($user)) {
-            $user->removeGroup($this);
+            // set the owning side to null (unless already changed)
+            if ($user->getSelectedGroup() === $this) {
+                $user->setSelectedGroup(null);
+            }
         }
-
-        return $this;
-    }
-
-    public function getSecret(): ?string
-    {
-        return $this->secret;
-    }
-
-    public function setSecret(string $secret): self
-    {
-        $this->secret = $secret;
 
         return $this;
     }
