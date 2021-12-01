@@ -6,6 +6,7 @@ use App\Entity\PlayedGame;
 use App\Form\PlayedGameType;
 use App\Repository\GameRepository;
 use App\Repository\PlayedGameRepository;
+use App\Repository\PlayerScoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,11 +44,13 @@ class PlayedGameController extends AbstractController
 
         return $this->renderForm('playedgame/form.html.twig', [
             'form' => $form,
+            'playedGame' => $playedGame,
+            'playerScores' => [],
         ]);
     }
 
     #[Route('/{id}', name: 'edit')]
-    public function editAction(int $id, Request $request, EntityManagerInterface $em): Response
+    public function editAction(int $id, Request $request, EntityManagerInterface $em, PlayerScoreRepository $playerScoreRepository): Response
     {
         $playedGame = $em->getRepository(PlayedGame::class)->find($id);
         $form = $this->createForm(PlayedGameType::class, $playedGame);
@@ -62,8 +65,12 @@ class PlayedGameController extends AbstractController
             return $this->redirectToRoute('playedgame_index');
         }
 
+        $playerScores = $playerScoreRepository->findBy(['playedGame' => $playedGame]);
+
         return $this->renderForm('playedgame/form.html.twig', [
             'form' => $form,
+            'playedGame' => $playedGame,
+            'playerScores' => $playerScores,
         ]);
     }
 

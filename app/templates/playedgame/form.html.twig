@@ -7,6 +7,44 @@
     <div class="d-flex justify-content-around align-items-center">
         <h1>Played Game</h1>
     </div>
+
     {{ form(form) }}
+
+    {% if playedGame.id is not null %}
+        <div class="d-flex justify-content-around align-items-center">
+            <h2>Player Scores</h2>
+            <a class="btn btn-primary" href="{{ path('playerscore_new', {playedGame: playedGame.id} ) }}">Create New</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Player</th>
+                    <th scope="col">Kills</th>
+                    <th scope="col">Deaths</th>
+                    <th scope="col">Assists</th>
+                    <th scope="col">Round</th>
+                    <th scope="col">Round Style</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for playerScore in playerScores %}
+                <tr>
+                    <th scope="row">{{playerScore.id}}</th>
+                    <td>{{playerScore.player.username}}</td>
+                    <td>{{playerScore.kills}}</td>
+                    <td>{{playerScore.deaths}}</td>
+                    <td>{{playerScore.assists}}</td>
+                    <td>{{playerScore.round}}</td>
+                    <td>{{playerScore.roundStyle}}</td>
+                    <td><a href="{{ path('playerscore_edit', {playedGame: playedGame.id, id: playerScore.id}) }}">Bewerken</a></td>
+                    <td><a href="{{ path('playerscore_delete', {playedGame: playedGame.id, id: playerScore.id}) }}">Verwijderen</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table> 
+    {% endif %}
 </div>
 {% endblock %}

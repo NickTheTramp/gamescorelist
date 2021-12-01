@@ -57,6 +57,13 @@ class PlayerScore
      */
     private $roundStyle;
 
+    public function __construct()
+    {
+        $this->kills = 0;
+        $this->deaths = 0;
+        $this->assists = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -144,5 +151,13 @@ class PlayerScore
         $this->roundStyle = $roundStyle;
 
         return $this;
+    }
+
+    public static function getRoundStyles()
+    {
+        return [
+            self::ROUND_STYLE_ATTACK,
+            self::ROUND_STYLE_DEFENCE,
+        ];
     }
 }
