@@ -2,20 +2,79 @@
 
 namespace App\Controller;
 
+use App\Entity\PlayedGame;
+use App\Form\PlayedGameType;
+use App\Repository\GameRepository;
+use App\Repository\PlayedGameRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/playedgames', name: 'playedgames_')]
+#[Route('/playedgame', name: 'playedgame_')]
 class PlayedGameController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(PlayedGameRepository $playedGameRepository, GameRepository $gameRepository): Response
     {
-        $number = random_int(0, 100);
+        $playedGames = $playedGameRepository->findAll();
 
         return $this->render('playedgame/index.html.twig', [
-            'number' => $number,
+            'playedGames' => $playedGames,
         ]);
+    }
+
+    #[Route('/new', name: 'new')]
+    public function newAction(Request $request, EntityManagerInterface $em): Response
+    {
+        $playedGame = new PlayedGame();
+        $form = $this->createForm(PlayedGameType::class, $playedGame);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $playedGame = $form->getData();
+
+            $em->persist($playedGame);
+            $em->flush();
+
+            return $this->redirectToRoute('playedgame_index');
+        }
+
+        return $this->renderForm('playedgame/form.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'edit')]
+    public function editAction(int $id, Request $request, EntityManagerInterface $em): Response
+    {
+        $playedGame = $em->getRepository(PlayedGame::class)->find($id);
+        $form = $this->createForm(PlayedGameType::class, $playedGame);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $playedGame = $form->getData();
+
+            $em->persist($playedGame);
+            $em->flush();
+
+            return $this->redirectToRoute('playedgame_index');
+        }
+
+        return $this->renderForm('playedgame/form.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/delete/{id}', name: 'delete')]
+    public function deleteAction(int $id, EntityManagerInterface $em): Response
+    {
+        $playedGame = $em->getRepository(PlayedGame::class)->find($id);
+
+        $em->remove($playedGame);
+        $em->flush();
+
+        return $this->redirectToRoute('playedgame_index');
     }
 }

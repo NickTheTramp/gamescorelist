@@ -9,5 +9,31 @@
     </div>
     {{ form(form) }}
 
+    {% if game.id is not null %}
+    <div class="d-flex justify-content-around align-items-center">
+        <h2>GameMaps</h2>
+        <a class="btn btn-primary" href="{{ path('gamemap_new', {game: game.id} ) }}">Create New</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gameMap in gameMaps %}
+            <tr>
+                <th scope="row">{{gameMap.id}}</th>
+                <td>{{gameMap.name}}</td>
+                <td><a href="{{ path('gamemap_edit', {game: game.id, id: gameMap.id}) }}">Bewerken</a></td>
+                <td><a href="{{ path('gamemap_delete', {game: game.id, id: gameMap.id}) }}">Verwijderen</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table> 
+    {% endif %}
 </div>
 {% endblock %}

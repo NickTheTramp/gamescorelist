@@ -4,13 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Form\GameType;
+use App\Repository\GameMapRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/games', name: 'games_')]
+#[Route('/game', name: 'game_')]
 class GameController extends AbstractController
 {
     #[Route('/', name: 'index')]
@@ -36,19 +37,22 @@ class GameController extends AbstractController
             $em->persist($game);
             $em->flush();
 
-            return $this->redirectToRoute('games_index');
+            return $this->redirectToRoute('game_index');
         }
 
         return $this->renderForm('game/form.html.twig', [
             'form' => $form,
+            'gameMaps' => [],
+            'game' => $game,
         ]);
     }
 
     #[Route('/{id}', name: 'edit')]
-    public function editAction(int $id, Request $request, EntityManagerInterface $em): Response
+    public function editAction(int $id, Request $request, EntityManagerInterface $em, GameMapRepository $gameMapRepository): Response
     {
         $game = $em->getRepository(Game::class)->find($id);
         $form = $this->createForm(GameType::class, $game);
+        $gameMaps = $gameMapRepository->findBy(['game' => $game]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,22 +61,24 @@ class GameController extends AbstractController
             $em->persist($game);
             $em->flush();
 
-            return $this->redirectToRoute('games_index');
+            return $this->redirectToRoute('game_index');
         }
 
         return $this->renderForm('game/form.html.twig', [
             'form' => $form,
+            'gameMaps' => $gameMaps,
+            'game' => $game,
         ]);
     }
 
     #[Route('/delete/{id}', name: 'delete')]
-    public function deleteAction(int $id, Request $request, EntityManagerInterface $em): Response
+    public function deleteAction(int $id, EntityManagerInterface $em): Response
     {
         $game = $em->getRepository(Game::class)->find($id);
 
         $em->remove($game);
         $em->flush();
 
-        return $this->redirectToRoute('games_index');
+        return $this->redirectToRoute('game_index');
     }
 }

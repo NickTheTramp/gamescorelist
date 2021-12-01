@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PlayedGameRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,6 +25,10 @@ class PlayedGame
      */
     private $date;
 
+    const SCOREFINAL_WIN = 'win';
+    const SCOREFINAL_DRAW = 'draw';
+    const SCOREFINAL_LOSS = 'loss';
+
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -40,9 +45,15 @@ class PlayedGame
      */
     private $playerScores;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=GameMap::class, inversedBy="playedGames")
+     */
+    private $gameMap;
+
     public function __construct()
     {
         $this->playerScores = new ArrayCollection();
+        $this->date = new DateTime();
     }
 
     public function getId(): ?int
@@ -112,6 +123,27 @@ class PlayedGame
                 $playerScore->setPlayedGame(null);
             }
         }
+
+        return $this;
+    }
+
+    public static function getScoreFinalTypes(): array
+    {
+        return [
+            self::SCOREFINAL_WIN,
+            self::SCOREFINAL_DRAW,
+            self::SCOREFINAL_LOSS,
+        ];
+    }
+
+    public function getGameMap(): ?GameMap
+    {
+        return $this->gameMap;
+    }
+
+    public function setGameMap(?GameMap $gameMap): self
+    {
+        $this->gameMap = $gameMap;
 
         return $this;
     }

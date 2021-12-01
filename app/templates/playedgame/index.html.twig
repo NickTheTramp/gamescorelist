@@ -1,16 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}👾 - Dashboard{% endblock %}
+{% block title %}👾 - playedgames{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello Dashboard</h1>
-    {{ number }}
+<div class="container-sm">
+    <div class="d-flex justify-content-around align-items-center">
+        <h1>Played Games</h1>
+        <a class="btn btn-primary" href="{{ path('playedgame_new') }}">Create New</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Score</th>
+                <th scope="col">Game</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for playedGame in playedGames %}
+            <tr>
+                <th scope="row">{{playedGame.id}}</th>
+                <td>{{playedGame.date|date("d/m/Y H:i")}}</td>
+                <td>{{playedGame.scoreFinal}}</td>
+                <td>{{playedGame.game.name}}</td>
+                <td><a href="{{ path('playedgame_edit', {id: playedGame.id}) }}">Bewerken</a></td>
+                <td><a href="{{ path('playedgame_delete', {id: playedGame.id}) }}">Verwijderen</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table> 
 </div>
-
 {% endblock %}
