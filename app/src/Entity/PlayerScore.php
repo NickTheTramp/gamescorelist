@@ -29,6 +29,34 @@ class PlayerScore
      */
     private $player;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $kills;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $deaths;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $assists;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $round;
+
+    const ROUND_STYLE_ATTACK = 'attack';
+    const ROUND_STYLE_DEFENCE = 'defence';
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $roundStyle;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +82,66 @@ class PlayerScore
     public function setPlayer(?User $player): self
     {
         $this->player = $player;
+
+        return $this;
+    }
+
+    public function getKills(): ?int
+    {
+        return $this->kills;
+    }
+
+    public function setKills(int $kills): self
+    {
+        $this->kills = $kills;
+
+        return $this;
+    }
+
+    public function getDeaths(): ?int
+    {
+        return $this->deaths;
+    }
+
+    public function setDeaths(int $deaths): self
+    {
+        $this->deaths = $deaths;
+
+        return $this;
+    }
+
+    public function getAssists(): ?int
+    {
+        return $this->assists;
+    }
+
+    public function setAssists(int $assists): self
+    {
+        $this->assists = $assists;
+
+        return $this;
+    }
+
+    public function getRound(): ?int
+    {
+        return $this->round;
+    }
+
+    public function setRound(?int $round): self
+    {
+        $this->round = $round;
+
+        return $this;
+    }
+
+    public function getRoundStyle(): ?string
+    {
+        return $this->roundStyle;
+    }
+
+    public function setRoundStyle(?string $roundStyle): self
+    {
+        $this->roundStyle = $roundStyle;
 
         return $this;
     }

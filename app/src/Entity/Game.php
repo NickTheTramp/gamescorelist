@@ -39,10 +39,16 @@ class Game
      */
     private $favourite;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hasRounds;
+
     public function __construct()
     {
         $this->playedGames = new ArrayCollection();
         $this->gameMaps = new ArrayCollection();
+        $this->hasRounds = false;
     }
 
     public function getId(): ?int
@@ -130,6 +136,18 @@ class Game
     public function setFavourite(bool $favourite): self
     {
         $this->favourite = $favourite;
+
+        return $this;
+    }
+
+    public function getHasRounds(): ?bool
+    {
+        return $this->hasRounds;
+    }
+
+    public function setHasRounds(bool $hasRounds): self
+    {
+        $this->hasRounds = $hasRounds;
 
         return $this;
     }
