@@ -15,6 +15,7 @@ class GameType extends AbstractType
         $builder
             ->add('name')
             ->add('favourite')
+            ->add('hasRounds')
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'save'],
             ]);

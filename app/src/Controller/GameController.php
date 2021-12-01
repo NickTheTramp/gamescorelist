@@ -37,7 +37,7 @@ class GameController extends AbstractController
             $em->persist($game);
             $em->flush();
 
-            return $this->redirectToRoute('game_index');
+            return $this->redirectToRoute('game_edit', ['id' => $game->getId()]);
         }
 
         return $this->renderForm('game/form.html.twig', [
@@ -61,7 +61,7 @@ class GameController extends AbstractController
             $em->persist($game);
             $em->flush();
 
-            return $this->redirectToRoute('game_index');
+            return $this->redirectToRoute('game_edit', ['id' => $game->getId()]);
         }
 
         return $this->renderForm('game/form.html.twig', [

@@ -25,7 +25,7 @@ class Game
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=PlayedGame::class, mappedBy="game")
+     * @ORM\OneToMany(targetEntity=PlayedGame::class, mappedBy="game", orphanRemoval=true)
      */
     private $playedGames;
 
