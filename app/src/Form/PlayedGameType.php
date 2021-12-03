@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\PlayedGame;
 use App\Repository\GameRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

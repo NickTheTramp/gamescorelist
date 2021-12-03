@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Group;
 use App\Entity\PlayedGame;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,32 +20,20 @@ class PlayedGameRepository extends ServiceEntityRepository
         parent::__construct($registry, PlayedGame::class);
     }
 
-    // /**
-    //  * @return PlayedGame[] Returns an array of PlayedGame objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * findBySelectedGroup finds all the playedGames related to the user group.
+     * 
+     * @param Group $group
+     * 
+     * @return PlayedGame[]
+     */
+    public function findBySelectedGroup(Group $group)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('t0')
+            ->leftJoin('t0.game', 't1')
+            ->andWhere('t1.selectedGroup = :group')
+            ->setParameter('group', $group->getId())
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?PlayedGame
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

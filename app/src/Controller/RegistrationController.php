@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Group;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\GroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,18 +15,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface, EntityManagerInterface $em): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasherInterface,
+        EntityManagerInterface $em,
+        GroupRepository $groupRepository
+    ): Response {
+        $user = new User();
+
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+
             $user->setPassword(
                 $userPasswordHasherInterface->hashPassword(
                     $user,
@@ -34,7 +39,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $group = $em->getRepository(Group::class)->findOneBy(['secret' => $form->get('secret')->getData()]);
+            $group = $groupRepository->findOneBy(['secret' => $form->get('secret')->getData()]);
 
             if (!isset($group)) {
                 return $this->redirectToRoute('app_register');
@@ -44,7 +49,6 @@ class RegistrationController extends AbstractController
 
             $em->persist($user);
             $em->flush();
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('login');
         }

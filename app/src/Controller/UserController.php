@@ -14,12 +14,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/', name: 'edit')]
-    public function index(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface, EntityManagerInterface $em): Response
-    {
+    public function index(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasherInterface,
+        EntityManagerInterface $em
+    ): Response {
         $user = $this->getUser();
-        $form = $this->createForm(UserType::class, $user);
 
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
 

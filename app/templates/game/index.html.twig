@@ -13,7 +13,6 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Favourite</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -23,7 +22,6 @@
             <tr>
                 <th scope="row">{{game.id}}</th>
                 <td>{{game.name}}</td>
-                <td>{{game.favourite ? 'yes' : 'no'}}</td>
                 <td><a href="{{ path('game_edit', {id: game.id}) }}">Bewerken</a></td>
                 <td><a href="{{ path('game_delete', {id: game.id}) }}">Verwijderen</a></td>
             </tr>

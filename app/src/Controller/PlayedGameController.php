@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\PlayedGame;
+use App\Entity\Group;
 use App\Form\PlayedGameType;
-use App\Repository\GameRepository;
 use App\Repository\PlayedGameRepository;
 use App\Repository\PlayerScoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,9 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlayedGameController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(PlayedGameRepository $playedGameRepository, GameRepository $gameRepository): Response
+    public function index(PlayedGameRepository $playedGameRepository): Response
     {
-        $playedGames = $playedGameRepository->findAll();
+        /** @var Group $selectedGroup */
+        $selectedGroup = $this->getUser()->getSelectedGroup();
+
+        $playedGames = $playedGameRepository->findBySelectedGroup($selectedGroup);
 
         return $this->render('playedgame/index.html.twig', [
             'playedGames' => $playedGames,
@@ -30,10 +33,13 @@ class PlayedGameController extends AbstractController
     public function newAction(Request $request, EntityManagerInterface $em): Response
     {
         $playedGame = new PlayedGame();
-        $form = $this->createForm(PlayedGameType::class, $playedGame);
 
+        $form = $this->createForm(PlayedGameType::class, $playedGame);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var PlayedGame $playedGame */
             $playedGame = $form->getData();
 
             $em->persist($playedGame);
@@ -51,13 +57,21 @@ class PlayedGameController extends AbstractController
     }
 
     #[Route('/{id}', name: 'edit')]
-    public function editAction(int $id, Request $request, EntityManagerInterface $em, PlayerScoreRepository $playerScoreRepository): Response
-    {
-        $playedGame = $em->getRepository(PlayedGame::class)->find($id);
-        $form = $this->createForm(PlayedGameType::class, $playedGame);
+    public function editAction(
+        int $id,
+        Request $request,
+        EntityManagerInterface $em,
+        PlayedGameRepository $playedGameRepository,
+        PlayerScoreRepository $playerScoreRepository
+    ): Response {
+        $playedGame = $playedGameRepository->find($id);
+        $playerScores = $playerScoreRepository->findBy(['playedGame' => $playedGame]);
 
+        $form = $this->createForm(PlayedGameType::class, $playedGame);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+
             /** @var PlayedGame $playedGame */
             $playedGame = $form->getData();
 
@@ -68,8 +82,6 @@ class PlayedGameController extends AbstractController
             return $this->redirectToRoute('playedgame_edit', ['id' => $playedGame->getId()]);
         }
 
-        $playerScores = $playerScoreRepository->findBy(['playedGame' => $playedGame]);
-
         return $this->renderForm('playedgame/form.html.twig', [
             'form' => $form,
             'playedGame' => $playedGame,
@@ -78,9 +90,12 @@ class PlayedGameController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete')]
-    public function deleteAction(int $id, EntityManagerInterface $em): Response
-    {
-        $playedGame = $em->getRepository(PlayedGame::class)->find($id);
+    public function deleteAction(
+        int $id,
+        PlayedGameRepository $playedGameRepository,
+        EntityManagerInterface $em
+    ): Response {
+        $playedGame = $playedGameRepository->find($id);
 
         $em->remove($playedGame);
         $em->flush();

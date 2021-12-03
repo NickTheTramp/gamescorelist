@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\PlayedGame;
 use App\Entity\PlayerScore;
 use App\Form\PlayerScoreType;
+use App\Repository\PlayedGameRepository;
 use App\Repository\PlayerScoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,10 +16,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlayerScoreController extends AbstractController
 {
     #[Route('/new', name: 'new')]
-    public function newAction(int $playedGame, Request $request, EntityManagerInterface $em): Response
-    {
+    public function newAction(
+        int $playedGame,
+        Request $request,
+        EntityManagerInterface $em,
+        PlayedGameRepository $playedGameRepository
+    ): Response {
         $playerScore = new PlayerScore();
-        $playerScore->setPlayedGame($em->getReference(PlayedGame::class, $playedGame));
+
+        $playedGame = $playedGameRepository->find($playedGame);
+        $playerScore->setPlayedGame($playedGame);
 
         $form = $this->createForm(PlayerScoreType::class, $playerScore);
         $form->handleRequest($request);
@@ -32,7 +38,7 @@ class PlayerScoreController extends AbstractController
             $em->persist($playerScore);
             $em->flush();
 
-            return $this->redirectToRoute('playedgame_edit', ['id' => $playerScore->getPlayedGame()->getId()]);
+            return $this->redirectToRoute('playedgame_edit', ['id' => $playedGame->getId()]);
         }
 
         return $this->renderForm('playerscore/form.html.twig', [
@@ -41,13 +47,19 @@ class PlayerScoreController extends AbstractController
     }
 
     #[Route('/{id}', name: 'edit')]
-    public function editAction(int $playedGame, int $id, Request $request, EntityManagerInterface $em, PlayerScoreRepository $playerScoreRepository): Response
-    {
+    public function editAction(
+        int $playedGame,
+        int $id,
+        Request $request,
+        EntityManagerInterface $em,
+        PlayerScoreRepository $playerScoreRepository,
+        PlayedGameRepository $playedGameRepository
+    ): Response {
         $playerScore = $playerScoreRepository->find($id);
+        $playedGame = $playedGameRepository->find($playedGame);
 
         $form = $this->createForm(PlayerScoreType::class, $playerScore);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -57,7 +69,7 @@ class PlayerScoreController extends AbstractController
             $em->persist($playerScore);
             $em->flush();
 
-            return $this->redirectToRoute('playedgame_edit', ['id' => $playerScore->getPlayedGame()->getId()]);
+            return $this->redirectToRoute('playedgame_edit', ['id' => $playedGame->getId()]);
         }
 
         return $this->renderForm('playerscore/form.html.twig', [
@@ -66,13 +78,19 @@ class PlayerScoreController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete')]
-    public function deleteAction(int $id, EntityManagerInterface $em, PlayerScoreRepository $playerScoreRepository): Response
-    {
+    public function deleteAction(
+        int $playedGame,
+        int $id,
+        EntityManagerInterface $em,
+        PlayerScoreRepository $playerScoreRepository,
+        PlayedGameRepository $playedGameRepository
+    ): Response {
         $playerScore = $playerScoreRepository->find($id);
+        $playedGame = $playedGameRepository->find($playedGame);
 
         $em->remove($playerScore);
         $em->flush();
 
-        return $this->redirectToRoute('game_edit', ['id' => $playerScore->getPlayedGame()->getId()]);
+        return $this->redirectToRoute('game_edit', ['id' => $playedGame->getId()]);
     }
 }
