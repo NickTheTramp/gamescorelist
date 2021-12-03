@@ -38,8 +38,9 @@ class PlayedGameController extends AbstractController
 
             $em->persist($playedGame);
             $em->flush();
+            $em->refresh($playedGame);
 
-            return $this->redirectToRoute('playedgame_index');
+            return $this->redirectToRoute('playedgame_edit', ['id' => $playedGame->getId()]);
         }
 
         return $this->renderForm('playedgame/form.html.twig', [
@@ -57,12 +58,14 @@ class PlayedGameController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var PlayedGame $playedGame */
             $playedGame = $form->getData();
 
             $em->persist($playedGame);
             $em->flush();
+            $em->refresh($playedGame);
 
-            return $this->redirectToRoute('playedgame_index');
+            return $this->redirectToRoute('playedgame_edit', ['id' => $playedGame->getId()]);
         }
 
         $playerScores = $playerScoreRepository->findBy(['playedGame' => $playedGame]);

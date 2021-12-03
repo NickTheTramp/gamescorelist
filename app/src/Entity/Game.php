@@ -37,12 +37,13 @@ class Game
     /**
      * @ORM\Column(type="boolean")
      */
-    private $favourite;
+    private $hasRounds;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="games")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $hasRounds;
+    private $selectedGroup;
 
     public function __construct()
     {
@@ -128,18 +129,6 @@ class Game
         return $this;
     }
 
-    public function getFavourite(): ?bool
-    {
-        return $this->favourite;
-    }
-
-    public function setFavourite(bool $favourite): self
-    {
-        $this->favourite = $favourite;
-
-        return $this;
-    }
-
     public function getHasRounds(): ?bool
     {
         return $this->hasRounds;
@@ -148,6 +137,18 @@ class Game
     public function setHasRounds(bool $hasRounds): self
     {
         $this->hasRounds = $hasRounds;
+
+        return $this;
+    }
+
+    public function getSelectedGroup(): ?Group
+    {
+        return $this->selectedGroup;
+    }
+
+    public function setSelectedGroup(?Group $selectedGroup): self
+    {
+        $this->selectedGroup = $selectedGroup;
 
         return $this;
     }

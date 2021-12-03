@@ -21,7 +21,10 @@ class PlayerScoreType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $players = $this->userRepository->findBy(['selectedGroup' => 1]);
+        /** @var PlayerScore $playerScore */
+        $playerScore = $builder->getData();
+
+        $players = $this->userRepository->findBy(['selectedGroup' => $playerScore->getPlayedGame()->getGame()->getSelectedGroup()]);
 
         $builder
             ->add('kills')

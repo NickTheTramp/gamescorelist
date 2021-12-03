@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\Group;
 use App\Form\GameType;
 use App\Repository\GameMapRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,14 +29,25 @@ class GameController extends AbstractController
     public function newAction(Request $request, EntityManagerInterface $em): Response
     {
         $game = new Game();
-        $form = $this->createForm(GameType::class, $game);
 
+        /** @var Group $selectedGroup */
+        $selectedGroup = $this->getUser()->getSelectedGroup();
+
+        if (!is_null($selectedGroup)) {
+            $game->setSelectedGroup($selectedGroup);
+        }
+
+        $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Game $game */
             $game = $form->getData();
 
             $em->persist($game);
             $em->flush();
+            $em->refresh($game);
 
             return $this->redirectToRoute('game_edit', ['id' => $game->getId()]);
         }
@@ -56,12 +68,14 @@ class GameController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Game $game */
             $game = $form->getData();
 
             $em->persist($game);
             $em->flush();
 
-            return $this->redirectToRoute('game_edit', ['id' => $game->getId()]);
+            // return $this->redirectToRoute('game_edit', ['id' => $game->getId()]);
         }
 
         return $this->renderForm('game/form.html.twig', [

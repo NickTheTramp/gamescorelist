@@ -19,6 +19,7 @@ class PlayerScoreController extends AbstractController
     public function newAction(int $playedGame, Request $request, EntityManagerInterface $em): Response
     {
         $playerScore = new PlayerScore();
+        $playerScore->setPlayedGame($em->getReference(PlayedGame::class, $playedGame));
 
         $form = $this->createForm(PlayerScoreType::class, $playerScore);
         $form->handleRequest($request);
@@ -27,7 +28,6 @@ class PlayerScoreController extends AbstractController
 
             /** @var PlayerScore $playerScore */
             $playerScore = $form->getData();
-            $playerScore->setPlayedGame($em->getReference(PlayedGame::class, $playedGame));
 
             $em->persist($playerScore);
             $em->flush();
@@ -48,11 +48,11 @@ class PlayerScoreController extends AbstractController
         $form = $this->createForm(PlayerScoreType::class, $playerScore);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var PlayerScore $playerScore */
             $playerScore = $form->getData();
-            $playerScore->setPlayedGame($em->getReference(PlayedGame::class, $playedGame));
 
             $em->persist($playerScore);
             $em->flush();

@@ -37,10 +37,16 @@ class Group
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="selectedGroup", orphanRemoval=true)
+     */
+    private $games;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->secret = random_bytes(30);
+        $this->games = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,6 +102,36 @@ class Group
             // set the owning side to null (unless already changed)
             if ($user->getSelectedGroup() === $this) {
                 $user->setSelectedGroup(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Game[]
+     */
+    public function getGames(): Collection
+    {
+        return $this->games;
+    }
+
+    public function addGame(Game $game): self
+    {
+        if (!$this->games->contains($game)) {
+            $this->games[] = $game;
+            $game->setSelectedGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGame(Game $game): self
+    {
+        if ($this->games->removeElement($game)) {
+            // set the owning side to null (unless already changed)
+            if ($game->getSelectedGroup() === $this) {
+                $game->setSelectedGroup(null);
             }
         }
 
