@@ -13,10 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/playedgame', name: 'playedgame_')]
+/**
+ * @Route("/playedgame", name="playedgame_")
+ */
 class PlayedGameController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    /**
+     * @Route("/", name="index")
+     */
     public function index(PlayedGameRepository $playedGameRepository): Response
     {
         /** @var Group $selectedGroup */
@@ -29,7 +33,9 @@ class PlayedGameController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'new')]
+    /**
+     * @Route("/new", name="new")
+     */
     public function newAction(Request $request, EntityManagerInterface $em): Response
     {
         $playedGame = new PlayedGame();
@@ -56,7 +62,9 @@ class PlayedGameController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'edit')]
+    /**
+     * @Route("/{id}", name="edit")
+     */
     public function editAction(
         int $id,
         Request $request,
@@ -89,7 +97,9 @@ class PlayedGameController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'delete')]
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
     public function deleteAction(
         int $id,
         PlayedGameRepository $playedGameRepository,

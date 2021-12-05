@@ -12,10 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/playedgame/{playedGame}/playerscore', name: 'playerscore_')]
+/**
+ * @Route("/playedgame/{playedGame}/playerscore", name="playerscore_")
+ */
 class PlayerScoreController extends AbstractController
 {
-    #[Route('/new', name: 'new')]
+    /**
+     * @Route("/new", name="new")
+     */
     public function newAction(
         int $playedGame,
         Request $request,
@@ -46,7 +50,9 @@ class PlayerScoreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'edit')]
+    /**
+     * @Route("/{id}", name="edit")
+     */
     public function editAction(
         int $playedGame,
         int $id,
@@ -77,7 +83,9 @@ class PlayerScoreController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'delete')]
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
     public function deleteAction(
         int $playedGame,
         int $id,

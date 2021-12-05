@@ -13,10 +13,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/game/{game}/gamemap', name: 'gamemap_')]
+
+/**
+ * @Route("/game/{game}/gamemap", name="gamemap_")
+ */
 class GameMapController extends AbstractController
 {
-    #[Route('/new', name: 'new')]
+    /**
+     * @Route("/new", name="new")
+     */
     public function newAction(
         int $game,
         Request $request,
@@ -47,7 +52,9 @@ class GameMapController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'edit')]
+    /**
+     * @Route("/{id}", name="edit")
+     */
     public function editAction(
         int $game,
         int $id,
@@ -80,7 +87,9 @@ class GameMapController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'delete')]
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
     public function deleteAction(
         int $game,
         int $id,
