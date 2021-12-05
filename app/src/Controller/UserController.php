@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\UserType;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,9 @@ class UserController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasherInterface,
         EntityManagerInterface $em
     ): Response {
+        /** @var User $user */
         $user = $this->getUser();
+        $group = $user->getSelectedGroup();
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -46,6 +49,7 @@ class UserController extends AbstractController
 
         return $this->renderForm('user/form.html.twig', [
             'form' => $form,
+            'group' => $group,
         ]);
     }
 }

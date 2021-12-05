@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PlayerScoreRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PlayerScoreRepository::class)
@@ -31,21 +32,33 @@ class PlayerScore
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $kills;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $deaths;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $assists;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $round;
 

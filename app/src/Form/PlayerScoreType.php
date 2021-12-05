@@ -30,17 +30,23 @@ class PlayerScoreType extends AbstractType
             ->add('kills')
             ->add('deaths')
             ->add('assists')
-            ->add('round')
-            ->add('roundStyle', ChoiceType::class, [
-                'choices' => PlayerScore::getRoundStyles(),
-                'choice_label' => function ($value) {
-                    return $value;
-                },
-            ])
             ->add('player', ChoiceType::class, [
                 'choices' => $players,
                 'choice_label' => 'username',
-            ])
+            ]);
+
+        if ($playerScore->getPlayedGame()->getGame()->getHasRounds()) {
+            $builder
+                ->add('round')
+                ->add('roundStyle', ChoiceType::class, [
+                    'choices' => PlayerScore::getRoundStyles(),
+                    'choice_label' => function ($value) {
+                        return $value;
+                    },
+                ]);
+        }
+
+        $builder
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'save btn-primary'],
             ]);

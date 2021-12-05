@@ -10,5 +10,12 @@
         <h1>User</h1>
     </div>
     {{ form(form) }}
+
+    <hr>
+
+    <div class="alert alert-info" role="alert">
+        Your group secret is: <span class="font-italic">{{group.secret}}</span>
+    </div>
+
 </div>
 {% endblock %}
