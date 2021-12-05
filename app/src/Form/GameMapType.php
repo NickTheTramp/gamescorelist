@@ -15,7 +15,7 @@ class GameMapType extends AbstractType
         $builder
             ->add('name')
             ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'save'],
+                'attr' => ['class' => 'save btn-primary'],
             ]);
     }
 

@@ -52,7 +52,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('register', SubmitType::class, [
-                'attr' => ['class' => 'save'],
+                'attr' => ['class' => 'save btn-primary'],
             ]);
     }
 

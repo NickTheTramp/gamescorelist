@@ -36,7 +36,7 @@ class PlayedGameType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'save'],
+                'attr' => ['class' => 'save btn-primary'],
             ]);
     }
 

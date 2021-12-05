@@ -13,17 +13,21 @@
         {% endif %}
 
         <form action="{{ path('login') }}" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+            <div class="form-group"> 
+                <label class="required" for="username">Username</label>
+                <input class="form-control" type="text" id="username" name="_username" required="required" value="{{ last_username }}"/>
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password"/>
+            <div class="form-group"> 
+                <label class="required" for="password">Password</label>
+                <input class="form-control" type="password" id="password" name="_password" required="required"/>
+            </div>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button type="submit">login</button>
+            <button class="save btn btn-primary" type="submit">Login</button>
         </form>
 
-        <a class="button mt-4" href="{{ path('app_register') }}">or register</a>
+        <a class="mt-4" href="{{ path('app_register') }}">or register</a>
     </div>
 {% endblock %}

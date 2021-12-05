@@ -23,7 +23,7 @@ class UserType extends AbstractType
                 ]
             )
             ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'save'],
+                'attr' => ['class' => 'save btn-primary'],
             ]);
     }
 

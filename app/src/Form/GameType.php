@@ -16,7 +16,7 @@ class GameType extends AbstractType
             ->add('name')
             ->add('hasRounds')
             ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'save'],
+                'attr' => ['class' => 'save btn-primary'],
             ]);
     }
 

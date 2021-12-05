@@ -42,7 +42,7 @@ class PlayerScoreType extends AbstractType
                 'choice_label' => 'username',
             ])
             ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'save'],
+                'attr' => ['class' => 'save btn-primary'],
             ]);
     }
 
