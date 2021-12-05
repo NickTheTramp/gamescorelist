@@ -99,6 +99,6 @@ class PlayerScoreController extends AbstractController
         $em->remove($playerScore);
         $em->flush();
 
-        return $this->redirectToRoute('game_edit', ['id' => $playedGame->getId()]);
+        return $this->redirectToRoute('playedgame_edit', ['id' => $playedGame->getId()]);
     }
 }
