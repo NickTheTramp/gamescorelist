@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}👾 - gameMap{% endblock %}
+{% block title %}Map{% endblock %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
 <div class="container-lg">
-    <div class="d-flex justify-content-around align-items-center">
-        <h1>GameMap</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Map</h1>
     </div>
     {{ form(form) }}
 

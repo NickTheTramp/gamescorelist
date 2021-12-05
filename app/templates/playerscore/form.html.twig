@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}👾 - playerScore{% endblock %}
+{% block title %}Player Score{% endblock %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
 <div class="container-lg">
-    <div class="d-flex justify-content-around align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Player Score</h1>
     </div>
     {{ form(form) }}
-
 </div>
 {% endblock %}

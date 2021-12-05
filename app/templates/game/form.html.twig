@@ -1,17 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}👾 - games{% endblock %}
+{% block title %}Game{% endblock %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
 <div class="container-lg">
-    <div class="d-flex justify-content-around align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Game</h1>
     </div>
     {{ form(form) }}
 
     {% if game.id is not null %}
-        <div class="d-flex justify-content-around align-items-center">
-            <h2>GameMaps</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+            <h3>Maps</h3>
             <a class="btn btn-primary" href="{{ path('gamemap_new', {game: game.id} ) }}">Create New</a>
         </div>
         <table class="table">

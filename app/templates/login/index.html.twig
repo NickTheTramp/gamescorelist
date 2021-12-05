@@ -1,24 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}👾 - login{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <div class="container-sm"> 
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>🕹 ScoreCard • Login</h3>
+        </div>
 
-    <form action="{{ path('login') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+        {% if error %}
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password"/>
+        <form action="{{ path('login') }}" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}"/>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="_password"/>
 
-        <button type="submit">login</button>
-    </form>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-    <a class="button" href="{{ path('app_register') }}">register</a>
+            <button type="submit">login</button>
+        </form>
 
+        <a class="button mt-4" href="{{ path('app_register') }}">or register</a>
+    </div>
 {% endblock %}

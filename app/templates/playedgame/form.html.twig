@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}👾 - playedgame{% endblock %}
+{% block title %}Played Game{% endblock %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
 <div class="container-lg">
-    <div class="d-flex justify-content-around align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Played Game</h1>
     </div>
 
     {{ form(form) }}
 
     {% if playedGame.id is not null %}
-        <div class="d-flex justify-content-around align-items-center">
-            <h2>Player Scores</h2>
-            <a class="btn btn-primary" href="{{ path('playerscore_new', {playedGame: playedGame.id} ) }}">Create New</a>
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+            <h3>Player Scores</h3>
+            <a class="btn btn-primary" href="{{ path('playerscore_new', {playedGame: playedGame.id}) }}">Create New</a>
         </div>
         <table class="table">
             <thead>

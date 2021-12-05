@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}👾 - playedgames{% endblock %}
+{% block title %}Played Games{% endblock %}
 
 {% block body %}
 <div class="container-sm">
-    <div class="d-flex justify-content-around align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Played Games</h1>
         <a class="btn btn-primary" href="{{ path('playedgame_new') }}">Create New</a>
     </div>
