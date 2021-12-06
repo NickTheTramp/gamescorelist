@@ -40,6 +40,10 @@ class PlayedGameController extends AbstractController
     {
         $playedGame = new PlayedGame();
 
+        /** @var Group $selectedGroup */
+        $selectedGroup = $this->getUser()->getSelectedGroup();
+        $playedGame->setSelectedGroup($selectedGroup);
+
         $form = $this->createForm(PlayedGameType::class, $playedGame);
         $form->handleRequest($request);
 
