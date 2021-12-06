@@ -50,6 +50,12 @@ class PlayedGame
      */
     private $gameMap;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="playedGames")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $selectedGroup;
+
     public function __construct()
     {
         $this->playerScores = new ArrayCollection();
@@ -144,6 +150,18 @@ class PlayedGame
     public function setGameMap(?GameMap $gameMap): self
     {
         $this->gameMap = $gameMap;
+
+        return $this;
+    }
+
+    public function getSelectedGroup(): ?Group
+    {
+        return $this->selectedGroup;
+    }
+
+    public function setSelectedGroup(?Group $selectedGroup): self
+    {
+        $this->selectedGroup = $selectedGroup;
 
         return $this;
     }

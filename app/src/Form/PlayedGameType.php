@@ -21,7 +21,10 @@ class PlayedGameType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $games = $this->gameRepository->findAll();
+        /** @var PlayedGame $playedGame */
+        $playedGame = $builder->getData();
+
+        $games = $this->gameRepository->findBy(['selectedGroup' => $playedGame->getSelectedGroup()]);
 
         $builder
             ->add('date')
@@ -34,7 +37,21 @@ class PlayedGameType extends AbstractType
             ->add('game', ChoiceType::class, [
                 'choices' => $games,
                 'choice_label' => 'name',
-            ])
+            ]);
+
+        if ($playedGame->getGame() !== null) {
+            $gameMaps = $playedGame->getGame()->getGameMaps();
+
+            if (count($gameMaps) > 0) {
+                $builder
+                    ->add('gameMap', ChoiceType::class, [
+                        'choices' => $gameMaps,
+                        'choice_label' => 'name',
+                    ]);
+            }
+        }
+
+        $builder
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'save btn-primary'],
             ]);
