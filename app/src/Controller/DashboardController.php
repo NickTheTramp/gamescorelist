@@ -35,7 +35,8 @@ class DashboardController extends AbstractController
             $selectedGame = $games[0];
         }
 
-        $charts[] = $chartService->createChart();
+        $charts[] = $chartService->createOverallWinrateChart($selectedGame);
+        $charts[] = $chartService->createWinratePerGameChart($selectedGame);
 
         return $this->render('dashboard/index.html.twig', [
             'charts' => $charts,
