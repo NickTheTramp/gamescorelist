@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% form_theme resetForm 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <div class="container-sm"> 
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>🕹 ScoreCard • Password Reset</h3>
+        </div>
+
+        {{ form_start(resetForm) }}
+            {{ form_row(resetForm.plainPassword) }}
+            <button class="btn btn-primary">Reset password</button>
+        {{ form_end(resetForm) }}
+
+        <a class="mt-4" href="{{ path('login') }}">or Login</a>
+    </div>
+
+{% endblock %}

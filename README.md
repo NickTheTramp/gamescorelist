@@ -15,3 +15,8 @@ In Docker shell :
 ## Build
 
 1. `yarn encore production `
+
+## Cron Jobs
+Consume Symfony Messenger (Every 5 minutes)
+
+   `php bin/console messenger:consume async --memory-limit=128M --time-limit=270`
