@@ -14,13 +14,11 @@ class LoginController extends AbstractController
     /**
      * @Route("/login", name="login")
      */
-    public function index(AuthenticationUtils $authenticationUtils, MessageBusInterface $bus): Response
+    public function index(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('dashboard');
         }
-
-        // $bus->dispatch(new EmailMessage('nick.tramper@gmail.com'));
 
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
